@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +13,61 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="FindMyPups" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="1OI-oD-RyA">
+                                <rect key="frame" x="0.0" y="48" width="375" height="619"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="590" id="tDv-1R-2et"/>
+                                    <constraint firstAttribute="width" constant="375" id="u7A-fp-34d"/>
+                                </constraints>
+                            </mapView>
+                            <searchBar contentMode="redraw" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W4T-d8-etw">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="5WI-I1-jqg"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="W4T-d8-etw" firstAttribute="leading" secondItem="1OI-oD-RyA" secondAttribute="trailing" constant="-375" id="CBO-kC-PEg"/>
+                            <constraint firstItem="W4T-d8-etw" firstAttribute="top" secondItem="1OI-oD-RyA" secondAttribute="top" id="DaJ-wa-veT"/>
+                            <constraint firstItem="1OI-oD-RyA" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="28.5" id="LIB-bu-bk3"/>
+                            <constraint firstItem="1OI-oD-RyA" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="diN-bY-Bai"/>
+                            <constraint firstItem="W4T-d8-etw" firstAttribute="trailing" secondItem="1OI-oD-RyA" secondAttribute="trailing" id="eVa-fG-Hxa"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="mapSB" destination="1OI-oD-RyA" id="THC-E4-v6G"/>
+                        <outlet property="searchDisplayController" destination="KXn-r2-TEK" id="rJN-Yl-ZAd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="WO9-Nz-tvl">
+                    <connections>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="bYJ-Ca-Tc8"/>
+                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="cLG-5C-uHS"/>
+                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="o2b-c5-hCi"/>
+                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="A55-dr-tlE"/>
+                    </connections>
+                </searchDisplayController>
+                <searchDisplayController id="KXn-r2-TEK">
+                    <connections>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="ZDg-ez-84z"/>
+                        <outlet property="searchBar" destination="W4T-d8-etw" id="wsX-lv-obp"/>
+                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="5r5-ur-Qab"/>
+                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="tEH-kw-LYM"/>
+                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="OTz-XT-Q2R"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
+            <point key="canvasLocation" x="117.59999999999999" y="117.39130434782609"/>
         </scene>
     </scenes>
 </document>
