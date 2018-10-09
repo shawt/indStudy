@@ -24,22 +24,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let clusterManager = ClusterManager()
+        let points = ClusterManager()
         let annotation = Annotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: 3, longitude: 2)
         
         annotation.type = .color(#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), radius: 5)
-        clusterManager.add(annotation)
-        
-        func startingMapAtMyLocation(coordinate : CLLocationCoordinate2D?){
-            if let coordinate = coordinate{
-                mapSB.camera.centerCoordinate = coordinate
-                var region = MKCoordinateRegionMake(coordinate, MKCoordinateSpan(latitudeDelta: -27.104671, longitudeDelta: -109.360481))
-                region.center = coordinate
-                mapSB.setRegion(region, animated: true)
-            }
-            mapSB.showsUserLocation = true
+        points.add(annotation)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error while updating location " + error.localizedDescription)
+    }
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    func addFoursquareAnnotations(_ completion: @escaping (_ count: Int) -> ()) {
+        pointsOfInterest.removeAll()
+        foursquareDataSource = LocationDataStore()
+        guard let foursquareDataSource = foursquareDataSource else {
+            return
         }
+        
+        foursquareDataSource.fetchLocationsFromFoursquareWithCompletion(nearString) { success in
+            if success {
+                for location in foursquareDataSource.foursquareData {
+                    print(location)
+                    let pin : MKPointAnnotation = MKPointAnnotation()
+                    pin.coordinate = CLLocationCoordinate2D(latitude: location.placeLatitude, longitude: location.placeLongitude)
+                    pin.title = location.placeName
+                    pin.subtitle = location.placeAddress
+                    self.pointsOfInterest.append(pin)}
+            }
+            completion(self.pointsOfInterest.count)
+        }
+    }
+        
+    func startingMapAtMyLocation(coordinate : CLLocationCoordinate2D?){
+        if let coordinate = coordinate{
+            mapSB.camera.centerCoordinate = coordinate
+            var region = MKCoordinateRegionMake(coordinate, MKCoordinateSpan(latitudeDelta: -27.104671, longitudeDelta: -109.360481))
+            region.center = coordinate
+            mapSB.setRegion(region, animated: true)
+        }
+        mapSB.showsUserLocation = true
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -73,7 +99,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
             }
         }
-        
     }
     
     func mapView(_ locationView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -94,36 +119,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        ClusterManager.reload(mapView) { finished in
-            // handle completion
+        points.reload(mapView){finish in
+            //handle completion
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error while updating location " + error.localizedDescription)
-    }
-    // Do any additional setup after loading the view, typically from a nib.
-        
-        func addFoursquareAnnotations(_ completion: @escaping (_ count: Int) -> ()) {
-            pointsOfInterest.removeAll()
-            foursquareDataSource = LocationDataStore()
-            guard let foursquareDataSource = foursquareDataSource else {
-                return
-            }
-            
-            foursquareDataSource.fetchLocationsFromFoursquareWithCompletion(nearString) { success in
-                if success {
-                    for location in foursquareDataSource.foursquareData {
-                        print(location)
-                        let pin : MKPointAnnotation = MKPointAnnotation()
-                        pin.coordinate = CLLocationCoordinate2D(latitude: location.placeLatitude, longitude: location.placeLongitude)
-                        pin.title = location.placeName
-                        pin.subtitle = location.placeAddress
-                        self.pointsOfInterest.append(pin)}
-                }
-                completion(self.pointsOfInterest.count)
-            }
-        }
     
     override func didReceiveMemoryWarning() {
             super.didReceiveMemoryWarning()

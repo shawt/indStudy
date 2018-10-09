@@ -22,7 +22,7 @@ class LocationDataStore {
             //Change this later to the search bar
             "query": "animal, park"]
         
-        FoursquareAPIClient.getQueryForSearchLandmarks(parameter) { itemsJSON in
+        FoursquareAPIClient.getQueryForSearchLandmarks(parameter) { itemsJSON,self.<#arg#>  in
             guard let itemsArray = itemsJSON.0?.dictionary!["venues"]?.array else {
                 print("error: no data recieved from API Client")
                 completion(false)
