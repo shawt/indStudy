@@ -115,13 +115,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             return view
             
         }
-        //  return nil
+          return nil
     }
     
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        points.reload(mapView){finish in
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool, points: ClusterManager) {
+        
+      //  points.reload(mapView)
+       // {finish in
             //handle completion
-        }
+        //}
     }
     
     
