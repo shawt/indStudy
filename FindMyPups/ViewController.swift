@@ -30,6 +30,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         annotation.type = .color(#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), radius: 5)
         points.add(annotation)
+
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -69,6 +70,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        //requests permission to use location services while the app is in the foreground
         
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
@@ -118,14 +120,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
           return nil
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool, points: ClusterManager) {
+    //func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool, points: ClusterManager) {
         
       //  points.reload(mapView)
        // {finish in
             //handle completion
         //}
-    }
+    //}
     
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        clusterManager.reload(mapView) { finished in
+            // handle completion
+        }
+    }
     
     override func didReceiveMemoryWarning() {
             super.didReceiveMemoryWarning()
