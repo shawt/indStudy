@@ -23,7 +23,6 @@ class LocationDataStore {
             //Change this later to the search bar
             "query": "animal, park"]
         
-        //find datatype of error 
         FoursquareAPIClient.getQueryForSearchLandmarks(parameter) {itemsJSON, err in
 
             guard let itemsArray = itemsJSON?.dictionary!["venues"]?.array else {
