@@ -10,26 +10,33 @@ import UIKit
 import CoreLocation
 import Cluster
 import MapKit
+import SwiftyJSON
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
-    @IBOutlet weak var mapSB: MKMapView!
+    
     @IBOutlet weak var userLocation: UISearchBar!
+    @IBOutlet weak var mapSB: MKMapView!
     var pointsOfInterest: [MKPointAnnotation] = []
     var foursquareDataSource: LocationDataStore?
     let locationManager : CLLocationManager = CLLocationManager()
     var location : CLLocationCoordinate2D?
+    var points : ClusterManager?
+    var annotation : Annotation?
     
     var nearString : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let points = ClusterManager()
-        let annotation = Annotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: 3, longitude: 2)
+        points = ClusterManager()
+        annotation = Annotation()
+        annotation?.coordinate = CLLocationCoordinate2D(latitude: 3, longitude: 2)
         
-        annotation.type = .color(#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), radius: 5)
-        points.add(annotation)
+        annotation?.type = .color(#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1), radius: 5)
+        points?.add(annotation!)
+        addFoursquareAnnotations(completed(1))
+        //made pointsOfInterest into an array and changed in the other locations
+        mapView( mapSB, viewFor: pointsOfInterest as! [MKAnnotation])
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -69,6 +76,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        //requests permission to use location services while the app is in the foreground
         
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
@@ -99,10 +107,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
             }
         }
+    }    
+    
+    func completed(_ json: Int){
+        pointsOfInterest[0].coordinate = CLLocationCoordinate2D(latitude: -27.104671, longitude: -20.923)
     }
     
-    func mapView(_ locationView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let annotation = annotation as? ClusterAnnotation {
+    func mapView(_ locationView: MKMapView, viewFor annotations: [MKAnnotation]) -> MKAnnotationView? {
+        if let annotation = annotations[0] as? ClusterAnnotation {
             guard let type = annotation.type else { return nil }
             let identifier = "Lebanon, Kentucky"
             nearString = identifier
@@ -118,14 +130,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
           return nil
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool, points: ClusterManager) {
-        
+    //func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool, points: ///ClusterManager) {
       //  points.reload(mapView)
        // {finish in
             //handle completion
         //}
-    }
+    //}
     
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+      //  points.reload(mapView) { finished in
+            // handle completion
+       // }
+    }
     
     override func didReceiveMemoryWarning() {
             super.didReceiveMemoryWarning()
