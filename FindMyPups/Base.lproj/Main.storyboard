@@ -44,8 +44,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="mapSB" destination="1OI-oD-RyA" id="THC-E4-v6G"/>
+                        <outlet property="mapSB" destination="1OI-oD-RyA" id="ZsD-ht-FhI"/>
                         <outlet property="searchDisplayController" destination="KXn-r2-TEK" id="rJN-Yl-ZAd"/>
+                        <outlet property="userLocation" destination="W4T-d8-etw" id="Bvh-xq-7Nb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
